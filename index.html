@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>S2</title>
-    <link href="https://fonts.googleapis.com/css?family=Nunito:300" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Nunito:300" rel="stylesheet"> -->
     <link rel="stylesheet" href="assets/css/owl.carousel.all.min.css">
     <link rel="stylesheet" href="app.css?v-23">
     <meta name="theme-color" content="#e24151">
@@ -41,7 +41,6 @@
     <main>
 
         <div class="owl-carousel owl-theme">
-
             <div class="item">
                 <img src="assets/mozao-1.jpg" alt="">
             </div>
@@ -64,20 +63,31 @@
             </button>
         </div>
 
+        <div class="overlay">
+            <div class="loadingAnimation">
+                <svg class="loading-img" fill="#e24151" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+                    <path d="M510.3 346a163.2 163.2 0 0 1 176-89.6A168.8 168.8 0 0 1 782 309c32-17.2 69.5-23.5 106.7-17a162.5 162.5 0 0 1 133 187.1A158.9 158.9 0 0 1 993 546c-4 6-9.2 13.2-15 20.4-28.9 36-70 71.6-120.2 106.4a1141 1141 0 0 1-139.3 82.4l-17.3 8.3-13.4-13.8a1114.9 1114.9 0 0 1-32.9-36.2 1141 1141 0 0 1-70-88.8c-31.6-44.9-56.2-87.8-71.6-127.8C498 538.8 472.4 584 439 631.3a1140.5 1140.5 0 0 1-102.8 125.1l-13.4 13.8-17.3-8.4a1117.2 1117.2 0 0 1-43.3-22.8c-32.2-18-65-38-96-59.5C116 644.7 74.9 609 46 573a265 265 0 0 1-15-20.5 158.9 158.9 0 0 1-28.6-66.8 162.5 162.5 0 0 1 133-187.1c37.2-6.6 74.6-.2 106.7 17a168.8 168.8 0 0 1 95.6-52.7 163.4 163.4 0 0 1 172.6 83zm369.3-12.8a111 111 0 0 0-88 21.8l-23.3 18.3-15.7-25.2a111 111 0 0 0-75.2-50.6 109.2 109.2 0 0 0-127.2 86.6c-3 16.9-2 33.3 2.5 48.9 2 8 4 15 6.4 22.2 13 38.1 37.2 81.5 69.7 127.5 20.7 29.4 43.5 58 66.7 84.7l17.3 19.8 23.4-12.6c30.8-17.2 62-36.3 91.6-56.8 46.2-32.1 83.8-64.6 109-96 4.8-6 9-11.8 12.9-17.5 10.4-14.2 16.9-29.3 19.8-45.6a109.2 109.2 0 0 0-89.9-125.5zm-735.2 6.7c-60 10.6-100 66.7-89.9 125.5 2.9 16.3 9.4 31.4 19.8 45.6 3.8 5.7 8.1 11.6 12.9 17.5 25.2 31.4 62.8 63.8 109 96a1088.5 1088.5 0 0 0 115 69.4l17.3-19.8c23.2-26.7 46-55.3 66.7-84.7 32.5-46 56.7-89.4 69.7-127.5 2.4-7.2 4.4-14.2 6.4-22.2 4.6-15.7 5.5-32 2.5-48.9a109.2 109.2 0 0 0-127.2-86.6 111 111 0 0 0-75.2 50.6l-15.7 25.1-23.3-18.2a111 111 0 0 0-88-21.8z"
+                    />
+                </svg>
+            </div>
+        </div>
+
     </main>
     <script>
         var request = new XMLHttpRequest();
         request.open('GET', '/music.json', true);
 
         var data;
+        var overlay = document.querySelector(".overlay");
 
         request.onload = function () {
             if (request.status >= 200 && request.status < 400) {
                 // Success!
                 data = JSON.parse(request.responseText);
                 var rand = data.musics[Math.floor(Math.random() * data.musics.length)];
-
-                _addMusic(rand.music)
+                
+                _addMusic(rand);
+                
             } else {
             }
         };
@@ -89,13 +99,20 @@
 
         function generator(params) {
             var rand = data.musics[Math.floor(Math.random() * data.musics.length)];
-            _addMusic(rand.music)
+            _addMusic(rand);
         }
 
-        function _addMusic(musicText) {
+        function _addMusic(musicRand) {
+            overlay.classList.remove("hide");
+
             var musicEl = document.getElementById("music");
             musicEl.innerHTML = '';
-            musicEl.innerHTML = musicText;
+            musicEl.innerHTML = musicRand.music;
+
+            setTimeout(() => {
+                overlay.classList.add("hide");
+                data.musics.splice(data.musics.indexOf(musicRand), 1);
+            }, 1500);
 
         }
     </script>
@@ -104,10 +121,12 @@
 
     <script>
         $(document).ready(function () {
-            $('.owl-carousel').owlCarousel({
+             $('.owl-carousel').owlCarousel({
                 items: 1,
                 margin: 10,
-                autoHeight: true
+                singleItem: true,
+                autoHeight: true,
+                autoPlay: 3000
             });
         })
     </script>

@@ -153,3 +153,50 @@ img {
     width: 100%;
 
 }
+
+.overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loadingAnimation path{
+    stroke: #FFF;
+    stroke-width: 1px;
+    stroke-dasharray: 244;
+    animation: logoAnimateDraw 1000ms linear infinite;
+}
+
+.loading-img {
+    display: block;
+    margin: auto;
+    width: 260px;
+    height: 260px;
+}
+
+@keyframes logoAnimateDraw {
+    0% {
+        fill-opacity: 0;
+        stroke-dashoffset: 244;
+    }
+    70% {
+        fill-opacity: 0;
+        stroke: #FFF;
+    }
+    100% {
+        fill-opacity: 1;
+        stroke-dashoffset: 0;
+        stroke: none;
+    }
+}
+
+.hide {
+    display: none !important; 
+}
